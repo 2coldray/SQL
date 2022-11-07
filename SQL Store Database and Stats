@@ -1,0 +1,39 @@
+-- Create Table
+CREATE TABLE store (id INTEGER PRIMARY KEY, name TEXT, quantity INTEGER, popularity INTEGER, season TEXT);
+
+-- Insert Values into Table
+INSERT INTO
+store
+VALUES
+(1, 'blue hoodie', 10, 10, 'fall'),
+(2, 'black hoodie', 10, 10, 'fall'),
+(3, 'red hoodie', 10, 10, 'fall'),
+(4, 'brown hoodie', 10, 10, 'fall'),
+(5, 'purple hoodie', 10, 10, 'fall'),
+(6, 'blue sweatpants', 5, 10, 'winter'),
+(7, 'brown sweatpants', 5, 10, 'winter'),
+(8, 'white sweatpants', 5, 10, 'winter'),
+(9, 'rainbow sweatpants', 5, 10, 'winter'),
+(10, 'gray sweatpants', 5, 10, 'winter'),
+(11, 'thermal', 6, 8, 'winter'),
+(12, 'goggles', 1, 3, 'summer'),
+(13, 'gatorade', 7, 5, 'spring'),
+(14, 'scarf', 20, 2, 'winter'),
+(15, 'shoes', 30, 15, 'fall');
+
+-- Discover how many items left to sale in December
+SELECT SUM(quantity) winter_inventory
+FROM store
+WHERE season = 'winter';
+
+-- Select top 3 items by popularity
+SELECT *
+FROM store
+ORDER BY popularity DESC
+LIMIT 3;
+
+-- Select top 3 items that have the most quantity
+SELECT *
+FROM store
+ORDER BY quantity DESC
+LIMIT 3;

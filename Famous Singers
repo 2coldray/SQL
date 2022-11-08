@@ -1,0 +1,41 @@
+/* Create table about the people and what they do here */
+CREATE TABLE singers (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT,
+    hometown TEXT);
+
+CREATE TABLE songs (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    singer_id INTEGER,
+    song_title TEXT);
+
+/*Insert Values into singers*/
+INSERT INTO singers (name, hometown) 
+VALUES
+('Beyonce', 'Houston'),
+('Drake', 'Toronto'),
+('Alicia Keys', 'New York City'),
+('Taylor Swift', 'Nashville'),
+('Lecrae', 'Houston');
+
+/*Insert Values into songs*/
+INSERT INTO songs (singer_id, song_title)
+VALUES 
+(1, 'Single Ladies'),
+(1, 'Irreplaceable'),
+(1, 'Drunk In Love'),
+(2, 'Know Yourself'),
+(2, '5am in Toronto'),
+(3, 'Unthinkable'),
+(4, 'All Too Well'),
+(5, 'Dirt'),
+(5, 'Take Me Up'),
+(5, 'Journey');
+
+
+/*What songs did Beyonce Sing ? */
+SELECT s1.name, s2.song_title
+FROM singers s1
+JOIN songs s2
+ON s1.id = s2.singer_id
+WHERE s1.name = 'Beyonce';

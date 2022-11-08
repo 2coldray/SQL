@@ -1,0 +1,48 @@
+-- Example query (PostgreSQL)
+SELECT np.director, np.cast, nt.title, nt.type, nt.description, nt.release_year
+FROM "CharlotteChaze/BreakIntoTech"."netflix_people" np
+LEFT JOIN "CharlotteChaze/BreakIntoTech"."netflix_titles_info" nt
+ON np.show_id = nt.show_id
+LIMIT 10;
+
+-- How many movies titles are there in the datatbase? 6,131 movies
+SELECT COUNT(title) movie_count
+FROM "CharlotteChaze/BreakIntoTech"."netflix_titles_info" 
+WHERE type = 'Movie';
+
+-- List All the Tv Shows/Movies in alphabetical order
+SELECT title, type
+FROM "CharlotteChaze/BreakIntoTech"."netflix_titles_info"
+WHERE type IN ('TV Show', 'Movie') 
+ORDER BY title;
+
+--List them TV shows in alphabetical Order
+SELECT title, type
+FROM "CharlotteChaze/BreakIntoTech"."netflix_titles_info"
+WHERE type = 'TV Show' 
+ORDER BY title;
+
+-- List all the movies in alphabetical order
+SELECT title, type
+FROM "CharlotteChaze/BreakIntoTech"."netflix_titles_info"
+WHERE type = 'Movie' 
+ORDER BY title;
+
+-- Who was the Director for the movie Bright Star? Jane Campion
+SELECT np.director, nt.type, nt.title, nt.release_year
+FROM "CharlotteChaze/BreakIntoTech"."netflix_people" np
+JOIN "CharlotteChaze/BreakIntoTech"."netflix_titles_info" nt
+ON np.show_id = nt.show_id
+WHERE nt.title = 'Bright Star';
+
+-- What is the oldest movie in the database and what year was it made? Prelude to War
+SELECT title, release_year
+FROM "CharlotteChaze/BreakIntoTech"."netflix_titles_info"
+WHERE type = 'Movie'
+ORDER BY release_year
+LIMIT 3;
+
+-- When was the most recent batch of shows/movies added to database? 2021-09-24
+SELECT MAX(date(date_added))
+FROM "CharlotteChaze/BreakIntoTech"."netflix_titles_info" 
+WHERE type = 'TV Show';

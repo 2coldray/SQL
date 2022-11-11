@@ -1,0 +1,103 @@
+/*CREATE TABLE BIT_DB.Spotifydata (
+id integer PRIMARY KEY,
+artist_name varchar NOT NULL,
+track_name varchar NOT NULL,
+track_id varchar NOT NULL,
+popularity integer NOT NULL,
+danceability decimal(4,3) NOT NULL,
+energy decimal(4,3) NOT NULL,
+key integer NOT NULL,
+loudness decimal(5,3) NOT NULL,
+mode integer NOT NULL,
+speechiness decimal(5,4) NOT NULL,
+acousticness decimal(6,5) NOT NULL,
+instrumentalness text NOT NULL,
+liveness decimal(5,4) NOT NULL,
+valence decimal(4,3) NOT NULL,
+tempo decimal(6,3) NOT NULL,
+duration_ms integer NOT NULL,
+time_signature integer NOT NULL 
+)*/
+
+-- Next, I uploaded the dataset into the table that was created
+
+-- Top 50 most listened songs in the world for year 2021 in Spotify.
+
+SELECT * FROM Spotifydata LIMIT 10;
+
+/*
+What is the average danceability by artist and track? 
+Who are the top 10 artists based on popularity? 
+What artist released the longest song? 
+What's the average danceability for the 10 most popular songs?
+*/
+
+-- Who are the top 10 artists based on popularity?
+SELECT artist_name, track_name, popularity, danceability, energy
+FROM Spotifydata
+ORDER BY popularity DESC
+LIMIT 10;
+
+-- What are the longets songs on the list?
+SELECT artist_name, track_name, popularity, MAX(duration_ms) song_length
+FROM SpotifyData
+GROUP BY 1, 2, 3
+ORDER BY 4 DESC
+LIMIT 10;
+
+-- What the average danceability for music by Olivia Rodrigo?
+SELECT artist_name, AVG(danceability) avg_danceability
+FROM SpotifyData
+WHERE artist_name = 'Olivia Rodrigo'
+GROUP BY 1;
+
+-- What are the best key and modality for a song to be "popular"?
+SELECT artist_name, track_name, popularity, danceability, energy, key, tempo, mode, duration_ms
+FROM Spotifydata
+ORDER BY popularity DESC
+LIMIT 10;
+
+/*
+Calculate the average popularity for the artists in the Spotify data table. 
+Then, for every artist with an average popularity of 90 or above, show their name, their average popularity, and label them as a “Top Star”.
+*/
+
+WITH pop AS (
+    SELECT artist_name, ROUND(AVG(popularity), 1) avg_popularity
+    FROM SpotifyData
+    GROUP BY 1
+    ORDER BY 2 DESC
+    LIMIT 25
+)
+
+SELECT artist_name, avg_popularity, 'Top Star' AS star_ranking
+FROM pop
+WHERE avg_popularity >= 90;
+
+
+-- Let's break down the top 25 artists in terms of popularity
+WITH top25 AS (
+    SELECT *
+    FROM SpotifyData
+    ORDER BY popularity DESC
+    LIMIT 25
+)
+
+-- How many songs did each artist have in the top 25? Olivia Rodrigo leads the pack with 4 which is nearly 25% of the top 25 of the most popular songs.
+-- SZA also has 4 total songs in the top 50, but only 3 in the top 25 behind Olivia.
+SELECT artist_name, COUNT(artist_name) as song_count
+FROM top25
+GROUP BY 1
+ORDER BY 2 DESC;
+
+-- Let's analyze Olivia Rodrigo to see why she's so popular
+SELECT *
+FROM SpotifyData
+WHERE artist_name = 'Olivia Rodrigo';
+
+/*
+Olivia is right in the sweet spots in pretty much all the categories. The tempo, energy, danceability come in a variety of songs that have a BPM of 100 to a BPM of 180.
+She sits around the average in most of the categories but makes her music in the major key and very acoustic. People must relate to the 
+content of her music or really like more sad songs considering driverse licence and traitor are 2 of the bottom 3 songs by valence which is the mood of each song.
+The fact she has 4 songs in the top 25 most listened to songs in the world indicte how popular she was in 2021 and made some of the best music of the year.
+*/
